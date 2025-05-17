@@ -1,0 +1,268 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Adobe Photoshop",
+      "description": "Профессиональный графический редактор для обработки изображений и создания цифровых иллюстраций.",
+      "price": 12990,
+      "discountPrice": 9990,
+      "category": "Graphics",
+      "subcategory": "Редакторы изображений",
+      "rating": 4.8,
+      "reviewCount": 245,
+      "tags": ["Graphics", "дизайн", "фото", "редактор"],
+      "features": [
+        "Профессиональные инструменты ретуши",
+        "Расширенные возможности работы со слоями",
+        "Поддержка графических планшетов",
+        "Автоматизация через скрипты и экшены"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 98,
+      "license": "Подписка на 1 год"
+    },
+    {
+      "id": 2,
+      "name": "Microsoft Office",
+      "description": "Пакет офисных программ для работы с документами, таблицами и презентациями.",
+      "price": 8990,
+      "discountPrice": null,
+      "category": "Office",
+      "subcategory": "Office",
+      "rating": 4.5,
+      "reviewCount": 189,
+      "tags": ["Office", "документы", "таблицы", "презентации"],
+      "features": [
+        "Word для работы с документами",
+        "Excel для работы с таблицами",
+        "PowerPoint для создания презентаций",
+        "Outlook для управления электронной почтой"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 95,
+      "license": "Бессрочная лицензия"
+    },
+    {
+      "id": 3,
+      "name": "Антивирус Касперского",
+      "description": "Комплексное решение для защиты от вирусов, шпионских программ и других угроз.",
+      "price": 3990,
+      "discountPrice": 2990,
+      "category": "Antivirus",
+      "subcategory": "Комплексная защита",
+      "rating": 4.2,
+      "reviewCount": 127,
+      "tags": ["безопасность", "Antivirus", "защита"],
+      "features": [
+        "Защита от вирусов и шпионских программ",
+        "Безопасные онлайн-платежи",
+        "Родительский контроль",
+        "Защита от фишинга"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 88,
+      "license": "Лицензия на 3 устройства"
+    },
+    {
+      "id": 4,
+      "name": "Windows 11 Pro",
+      "description": "Операционная система для профессионалов с расширенными возможностями безопасности и управления.",
+      "price": 15990,
+      "discountPrice": null,
+      "category": "OC",
+      "subcategory": "Windows",
+      "rating": 4.0,
+      "reviewCount": 156,
+      "tags": ["OC", "windows", "система"],
+      "features": [
+        "Современный интерфейс",
+        "Улучшенная производительность",
+        "Интеграция с Microsoft 365",
+        "Расширенные настройки безопасности"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 92,
+      "license": "Бессрочная лицензия"
+    },
+    {
+      "id": 5,
+      "name": "Adobe Illustrator",
+      "description": "Профессиональный векторный графический редактор для создания иллюстраций и логотипов.",
+      "price": 11990,
+      "discountPrice": 9490,
+      "category": "Graphics",
+      "subcategory": "Векторные редакторы",
+      "rating": 4.7,
+      "reviewCount": 178,
+      "tags": ["Graphics", "дизайн", "вектор", "иллюстрации"],
+      "features": [
+        "Продвинутые инструменты для работы с векторами",
+        "Точное управление цветом",
+        "Интеграция с другими продуктами Adobe",
+        "Библиотеки шаблонов и элементов"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 90,
+      "license": "Подписка на 1 год"
+    },
+    {
+      "id": 6,
+      "name": "1C:Бухгалтерия",
+      "description": "Программа для автоматизации бухгалтерского и налогового учета.",
+      "price": 17900,
+      "discountPrice": null,
+      "category": "Business",
+      "subcategory": "Бухгалтерия",
+      "rating": 4.3,
+      "reviewCount": 215,
+      "tags": ["бухгалтерия", "учет", "Business", "1с"],
+      "features": [
+        "Ведение бухгалтерского и налогового учета",
+        "Подготовка и сдача отчетности",
+        "Расчет зарплаты и налогов",
+        "Интеграция с банками и онлайн-кассами"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 85,
+      "license": "Бессрочная лицензия"
+    },
+    {
+      "id": 7,
+      "name": "ESET NOD32",
+      "description": "Антивирусное решение с минимальной нагрузкой на систему и высоким уровнем обнаружения угроз.",
+      "price": 2990,
+      "discountPrice": 1990,
+      "category": "Antivirus",
+      "subcategory": "Базовая защита",
+      "rating": 4.4,
+      "reviewCount": 132,
+      "tags": ["безопасность", "Antivirus", "защита"],
+      "features": [
+        "Минимальное влияние на производительность",
+        "Высокий уровень обнаружения вирусов",
+        "Защита от фишинга и вредоносных сайтов",
+        "Защита от программ-вымогателей"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 82,
+      "license": "Лицензия на 1 год"
+    },
+    {
+      "id": 8,
+      "name": "Adobe Premiere Pro",
+      "description": "Профессиональный видеоредактор для монтажа и обработки видео.",
+      "price": 13990,
+      "discountPrice": 11990,
+      "category": "Graphics",
+      "subcategory": "Видеоредакторы",
+      "rating": 4.6,
+      "reviewCount": 167,
+      "tags": ["Graphics", "видео", "монтаж", "редактор"],
+      "features": [
+        "Профессиональный монтаж видео",
+        "Цветокоррекция и спецэффекты",
+        "Работа с многокамерными съемками",
+        "Интеграция с другими продуктами Adobe"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 88,
+      "license": "Подписка на 1 год"
+    },
+    {
+      "id": 9,
+      "name": "CorelDRAW Graphics Suite",
+      "description": "Пакет программ для графического дизайна, редактирования фотографий и создания макетов страниц.",
+      "price": 9990,
+      "discountPrice": 7990,
+      "category": "Graphics",
+      "subcategory": "Графические пакеты",
+      "rating": 4.5,
+      "reviewCount": 143,
+      "tags": ["Graphics", "дизайн", "вектор", "макеты"],
+      "features": [
+        "Векторная графика и макетирование",
+        "Редактирование фотографий",
+        "Трассировка растровых изображений",
+        "Профессиональные инструменты типографики"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 84,
+      "license": "Бессрочная лицензия"
+    },
+    {
+      "id": 10,
+      "name": "AutoCAD",
+      "description": "Система автоматизированного проектирования для создания точных 2D и 3D чертежей.",
+      "price": 21990,
+      "discountPrice": null,
+      "category": "САПР",
+      "subcategory": "Graphics",
+      "rating": 4.7,
+      "reviewCount": 198,
+      "tags": ["Graphics", "чертежи", "САПР", "инженерия"],
+      "features": [
+        "2D и 3D проектирование",
+        "Параметрическое моделирование",
+        "Совместная работа над проектами",
+        "Библиотеки стандартных элементов"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 89,
+      "license": "Подписка на 1 год"
+    },
+    {
+      "id": 11,
+      "name": "Microsoft SQL Server",
+      "description": "Система управления реляционными базами данных с расширенными аналитическими возможностями.",
+      "price": 25990,
+      "discountPrice": null,
+      "category": "Базы данных",
+      "subcategory": "СУБД",
+      "rating": 4.6,
+      "reviewCount": 112,
+      "tags": ["базы данных", "SQL", "сервер", "аналитика"],
+      "features": [
+        "Высокая производительность и масштабируемость",
+        "Встроенные инструменты бизнес-аналитики",
+        "Расширенная система безопасности",
+        "Интеграция с другими продуктами Microsoft"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 86,
+      "license": "Серверная лицензия"
+    },
+    {
+      "id": 12,
+      "name": "Bitdefender Total Security",
+      "description": "Комплексное решение для защиты всех устройств от вирусов и других угроз.",
+      "price": 4990,
+      "discountPrice": 3490,
+      "category": "Antivirus",
+      "subcategory": "Комплексная защита",
+      "rating": 4.5,
+      "reviewCount": 156,
+      "tags": ["безопасность", "Antivirus", "защита", "мультиплатформенность"],
+      "features": [
+        "Защита от вирусов и вредоносных программ",
+        "Многоуровневая защита от программ-вымогателей",
+        "Оптимизация производительности",
+        "Защита конфиденциальности в интернете"
+      ],
+      "images": ["/images/products/placeHolder.png"],
+      "inStock": true,
+      "popularity": 87,
+      "license": "Лицензия на 5 устройств"
+    }
+  ]
+}

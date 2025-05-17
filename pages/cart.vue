@@ -4,10 +4,14 @@
       <h1 class="page-title">Корзина</h1>
       
       <div v-if="cartStore.isEmpty" class="cart-empty">
-        <div class="empty-icon">🛒</div>
+        <div class="empty-icon">
+          <FontAwesomeIcon icon="shopping-cart" size="3x" />
+        </div>
         <h2>Ваша корзина пуста</h2>
         <p>Добавьте товары в корзину, чтобы оформить заказ</p>
-        <NuxtLink to="/catalog" class="btn btn-primary">Перейти в каталог</NuxtLink>
+        <NuxtLink to="/catalog" class="btn btn-primary">
+          <FontAwesomeIcon icon="search" class="btn-icon" /> Перейти в каталог
+        </NuxtLink>
       </div>
       
       <div v-else class="cart-content">
@@ -47,7 +51,7 @@
                   @click="decreaseQuantity(item.id)"
                   :disabled="item.quantity <= 1"
                 >
-                  -
+                  <FontAwesomeIcon icon="minus" />
                 </button>
                 <input 
                   type="number" 
@@ -60,7 +64,7 @@
                   class="quantity-btn"
                   @click="increaseQuantity(item.id)"
                 >
-                  +
+                  <FontAwesomeIcon icon="plus" />
                 </button>
               </div>
             </div>
@@ -75,7 +79,7 @@
                 @click="removeItem(item.id)"
                 aria-label="Удалить товар"
               >
-                ✕
+                <FontAwesomeIcon icon="trash" />
               </button>
             </div>
           </div>
@@ -113,23 +117,23 @@
                   @click="applyPromoCode"
                   :disabled="!promoCode"
                 >
-                  Применить
+                  <FontAwesomeIcon icon="check" class="btn-icon" /> Применить
                 </button>
               </div>
               <div v-if="promoCodeError" class="promo-error">
-                {{ promoCodeError }}
+                <FontAwesomeIcon icon="exclamation-circle" class="status-icon" /> {{ promoCodeError }}
               </div>
               <div v-if="promoCodeSuccess" class="promo-success">
-                {{ promoCodeSuccess }}
+                <FontAwesomeIcon icon="check-circle" class="status-icon" /> {{ promoCodeSuccess }}
               </div>
             </div>
             
             <NuxtLink to="/checkout" class="btn btn-primary btn-block">
-              Оформить заказ
+              <FontAwesomeIcon icon="shopping-bag" class="btn-icon" /> Оформить заказ
             </NuxtLink>
             
             <button class="btn btn-outline-secondary btn-block" @click="clearCart">
-              Очистить корзину
+              <FontAwesomeIcon icon="trash" class="btn-icon" /> Очистить корзину
             </button>
           </div>
         </div>
@@ -228,14 +232,17 @@ useSeoMeta({
   .cart-empty {
     text-align: center;
     padding: $spacer * 3;
-    background-color: $gray-100;
+    background-color: white;
     border-radius: $border-radius;
-    margin-bottom: $spacer * 3;
+    box-shadow: $box-shadow-sm;
     
     .empty-icon {
-      font-size: 4rem;
       margin-bottom: $spacer;
       color: $gray-500;
+    }
+    
+    .btn-icon {
+      margin-right: $spacer * 0.5;
     }
     
     h2 {
@@ -351,17 +358,31 @@ useSeoMeta({
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: $font-weight-bold;
       cursor: pointer;
       transition: $transition-base;
+      padding: 0;
+      
+      svg {
+        width: 12px;
+        height: 12px;
+        color: $gray-700;
+      }
       
       &:hover {
         background-color: $gray-200;
+        
+        svg {
+          color: $primary;
+        }
       }
       
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
+        
+        svg {
+          color: $gray-500;
+        }
       }
     }
     
@@ -397,21 +418,30 @@ useSeoMeta({
     }
     
     .remove-btn {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: none;
       background-color: $gray-200;
-      color: $gray-700;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: $transition-base;
+      padding: 0;
+      
+      svg {
+        width: 14px;
+        height: 14px;
+        color: $gray-700;
+      }
       
       &:hover {
         background-color: $danger;
-        color: white;
+        
+        svg {
+          color: white;
+        }
       }
     }
   }
@@ -476,20 +506,38 @@ useSeoMeta({
       }
     }
     
+    .promo-error, .promo-success {
+      display: flex;
+      align-items: center;
+      font-size: $font-size-sm;
+      margin-top: $spacer * 0.5;
+      
+      .status-icon {
+        margin-right: $spacer * 0.25;
+        width: 14px;
+      }
+    }
+    
     .promo-error {
       color: $danger;
-      font-size: $font-size-sm;
     }
     
     .promo-success {
       color: $success;
-      font-size: $font-size-sm;
+    }
+    
+    .btn-icon {
+      margin-right: $spacer * 0.25;
     }
   }
   
   .btn-block {
     width: 100%;
     margin-bottom: $spacer;
+    
+    .btn-icon {
+      margin-right: $spacer * 0.5;
+    }
   }
 }
 </style>

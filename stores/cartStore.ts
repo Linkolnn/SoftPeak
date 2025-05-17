@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { persistedState } from '~/plugins/pinia-persistence';
 
 interface CartItem {
   id: string;
@@ -12,13 +13,15 @@ interface CartState {
   items: CartItem[];
   promoCode: string | null;
   promoDiscount: number;
+  userId: string | null;
 }
 
 export const useCartStore = defineStore('cart', {
   state: (): CartState => ({
     items: [],
     promoCode: null,
-    promoDiscount: 0
+    promoDiscount: 0,
+    userId: null
   }),
   
   getters: {
@@ -53,12 +56,22 @@ export const useCartStore = defineStore('cart', {
       } else {
         this.items.push({ ...product, quantity: 1 });
       }
+      
+      // Save cart for the current user
+      if (this.userId) {
+        this.saveUserCart(this.userId);
+      }
     },
     
     removeFromCart(productId: string) {
       const index = this.items.findIndex(item => item.id === productId);
       if (index !== -1) {
         this.items.splice(index, 1);
+        
+        // Save cart for the current user
+        if (this.userId) {
+          this.saveUserCart(this.userId);
+        }
       }
     },
     
@@ -69,6 +82,11 @@ export const useCartStore = defineStore('cart', {
           this.removeFromCart(productId);
         } else {
           item.quantity = quantity;
+          
+          // Save cart for the current user
+          if (this.userId) {
+            this.saveUserCart(this.userId);
+          }
         }
       }
     },
@@ -77,6 +95,11 @@ export const useCartStore = defineStore('cart', {
       this.items = [];
       this.promoCode = null;
       this.promoDiscount = 0;
+      
+      // Save empty cart for the current user
+      if (this.userId) {
+        this.saveUserCart(this.userId);
+      }
     },
     
     applyPromoCode(code: string) {
@@ -100,10 +123,57 @@ export const useCartStore = defineStore('cart', {
     removePromoCode() {
       this.promoCode = null;
       this.promoDiscount = 0;
+      
+      // Save updated cart with removed promo code
+      if (this.userId) {
+        this.saveUserCart(this.userId);
+      }
+    },
+    
+    // Set the current user ID
+    setUserId(userId: string) {
+      this.userId = userId;
+      this.loadUserCart(userId);
+    },
+    
+    // Clear user ID on logout
+    clearUserId() {
+      this.userId = null;
+    },
+    
+    // Load cart for a specific user
+    loadUserCart(userId: string) {
+      const userCart = localStorage.getItem(`cart_${userId}`);
+      if (userCart) {
+        try {
+          const parsedCart = JSON.parse(userCart);
+          this.items = parsedCart.items || [];
+          this.promoCode = parsedCart.promoCode || null;
+          this.promoDiscount = parsedCart.promoDiscount || 0;
+        } catch (e) {
+          console.error('Failed to parse cart from localStorage:', e);
+          this.clearCart();
+        }
+      } else {
+        this.clearCart();
+      }
+    },
+    
+    // Save cart for a specific user
+    saveUserCart(userId: string) {
+      if (userId) {
+        const cartData = {
+          items: this.items,
+          promoCode: this.promoCode,
+          promoDiscount: this.promoDiscount
+        };
+        localStorage.setItem(`cart_${userId}`, JSON.stringify(cartData));
+      }
     }
   },
   
   persist: {
-    storage: process.client ? localStorage : null,
+    storage: persistedState.localStorage,
+    paths: ['items', 'promoCode', 'promoDiscount', 'userId'],
   },
 });

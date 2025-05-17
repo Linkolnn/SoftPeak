@@ -38,13 +38,13 @@
               class="search-input"
             />
             <button class="search-button" @click="handleSearch">
-              <span class="search-icon">🔍</span>
+              <FontAwesomeIcon icon="search" class="search-icon" />
             </button>
           </div>
           
           <div class="cart-wrapper">
             <NuxtLink to="/cart" class="cart-link">
-              <span class="cart-icon">🛒</span>
+              <FontAwesomeIcon icon="shopping-cart" class="cart-icon" />
               <ClientOnly>
                 <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
               </ClientOnly>
@@ -57,10 +57,18 @@
                 <div class="profile-dropdown" @click="toggleProfileMenu">
                   <div class="profile-avatar">{{ userInitials }}</div>
                   <div class="profile-menu" v-if="showProfileMenu">
-                    <NuxtLink to="/profile" class="profile-menu-item">Профиль</NuxtLink>
-                    <NuxtLink to="/profile/orders" class="profile-menu-item">Заказы</NuxtLink>
-                    <NuxtLink to="/profile/favorites" class="profile-menu-item">Избранное</NuxtLink>
-                    <div class="profile-menu-item" @click="logout">Выйти</div>
+                    <NuxtLink to="/profile" class="profile-menu-item">
+                      <FontAwesomeIcon icon="user" class="menu-icon" /> Профиль
+                    </NuxtLink>
+                    <NuxtLink to="/profile/orders" class="profile-menu-item">
+                      <FontAwesomeIcon icon="box" class="menu-icon" /> Заказы
+                    </NuxtLink>
+                    <NuxtLink to="/profile/favorites" class="profile-menu-item">
+                      <FontAwesomeIcon icon="heart" class="menu-icon" /> Избранное
+                    </NuxtLink>
+                    <div class="profile-menu-item" @click="logout">
+                      <FontAwesomeIcon icon="sign-out-alt" class="menu-icon" /> Выйти
+                    </div>
                   </div>
                 </div>
               </template>
@@ -183,6 +191,7 @@ onUnmounted(() => {
       
       @media (max-width: map-get($breakpoints, md)) {
         flex-wrap: wrap;
+        justify-content: space-between;
       }
     }
     
@@ -255,6 +264,15 @@ onUnmounted(() => {
       cursor: pointer;
       padding: 0;
       font-size: $font-size-sm;
+      color: $gray-600;
+      
+      &:hover {
+        color: $primary;
+      }
+      
+      .search-icon {
+        width: 14px;
+      }
     }
   }
   
@@ -272,6 +290,11 @@ onUnmounted(() => {
       
       &:hover {
         color: $primary;
+      }
+      
+      .cart-icon {
+        width: 20px;
+        height: 20px;
       }
     }
     
@@ -343,10 +366,22 @@ onUnmounted(() => {
       color: $gray-800;
       text-decoration: none;
       transition: $transition-base;
+      display: flex;
+      align-items: center;
+      
+      .menu-icon {
+        margin-right: $spacer * 0.5;
+        width: 16px;
+        color: $gray-600;
+      }
       
       &:hover {
         background-color: $gray-100;
         color: $primary;
+        
+        .menu-icon {
+          color: $primary;
+        }
       }
     }
   }

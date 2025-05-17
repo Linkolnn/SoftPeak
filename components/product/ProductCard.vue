@@ -19,10 +19,19 @@
       
       <div class="product-meta">
         <div class="product-category">{{ product.category }}</div>
-        <div class="product-rating">
-          <span class="rating-stars">{{ ratingStars }}</span>
-          <span class="rating-count">({{ product.reviewCount }})</span>
-        </div>
+        <ClientOnly>
+          <div class="product-rating">
+            <span class="rating-stars">
+              <span v-for="index in 5" :key="index">
+                <FontAwesomeIcon 
+                  :icon="getRatingIcon(index)" 
+                  :class="getRatingClass(index)" 
+                />
+              </span>
+            </span>
+            <span class="rating-count">({{ product.reviewCount }})</span>
+          </div>
+        </ClientOnly>
       </div>
       
       <div class="product-platforms">
@@ -35,19 +44,23 @@
         </span>
       </div>
       
-      <p class="product-description">
-        {{ truncatedDescription }}
-      </p>
+      <ClientOnly>
+        <p class="product-description">
+          {{ truncatedDescription }}
+        </p>
+      </ClientOnly>
       
       <div class="product-footer">
-        <div class="product-price">
-          <span v-if="product.discountPrice" class="price-original">{{ formatPrice(product.price) }}</span>
-          <span class="price-current">{{ formatPrice(product.discountPrice || product.price) }}</span>
-        </div>
+        <ClientOnly>
+          <div class="product-price">
+            <span v-if="product.discountPrice" class="price-original">{{ formatPrice(product.price) }}</span>
+            <span class="price-current">{{ formatPrice(product.discountPrice || product.price) }}</span>
+          </div>
+        </ClientOnly>
         
         <div class="product-actions">
           <button class="btn btn-primary btn-sm" @click.prevent="addToCart">
-            В корзину
+            <FontAwesomeIcon icon="shopping-cart" class="btn-icon" /> В корзину
           </button>
         </div>
       </div>
@@ -85,19 +98,27 @@ const formatPrice = (price: number) => {
   }).format(price);
 };
 
-// Generate rating stars
-const ratingStars = computed(() => {
+// Get rating icon for a specific position
+const getRatingIcon = (position: number) => {
   const rating = props.product.rating;
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  
-  let stars = '★'.repeat(fullStars);
-  if (halfStar) stars += '½';
-  stars += '☆'.repeat(emptyStars);
-  
-  return stars;
-});
+  if (position <= Math.floor(rating)) {
+    return ['fas', 'star']; // Full star
+  } else if (position === Math.ceil(rating) && rating % 1 >= 0.5) {
+    return 'star-half-alt'; // Half star
+  } else {
+    return ['far', 'star']; // Empty star
+  }
+};
+
+// Get CSS class for a rating star
+const getRatingClass = (position: number) => {
+  return {
+    'full-star': position <= Math.floor(props.product.rating),
+    'half-star': position === Math.ceil(props.product.rating) && props.product.rating % 1 >= 0.5,
+    'empty-star': position > Math.ceil(props.product.rating) || 
+                  (position === Math.ceil(props.product.rating) && props.product.rating % 1 < 0.5)
+  };
+};
 
 // Truncate description
 const truncatedDescription = computed(() => {
@@ -204,8 +225,15 @@ const addToCart = () => {
       align-items: center;
       
       .rating-stars {
-        color: $warning;
         margin-right: 4px;
+        
+        .full-star, .half-star {
+          color: $warning;
+        }
+        
+        .empty-star {
+          color: $gray-300;
+        }
       }
       
       .rating-count {

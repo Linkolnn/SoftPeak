@@ -4,7 +4,9 @@
       <h1 class="page-title">Оформление заказа</h1>
       
       <div v-if="cartStore.isEmpty" class="checkout-empty">
-        <div class="empty-icon">🛒</div>
+        <div class="empty-icon">
+          <FontAwesomeIcon icon="shopping-cart" size="3x" />
+        </div>
         <h2>Ваша корзина пуста</h2>
         <p>Добавьте товары в корзину, чтобы оформить заказ</p>
         <NuxtLink to="/catalog" class="btn btn-primary">Перейти в каталог</NuxtLink>
@@ -177,7 +179,9 @@
             </button>
             
             <div class="secure-checkout">
-              <div class="secure-icon">🔒</div>
+              <div class="secure-icon">
+                <FontAwesomeIcon icon="lock" />
+              </div>
               <div class="secure-text">Безопасная оплата</div>
             </div>
           </div>
@@ -188,7 +192,9 @@
     <!-- Order Success Modal -->
     <div v-if="showSuccessModal" class="modal-overlay">
       <div class="modal-content">
-        <div class="success-icon">✓</div>
+        <div class="success-icon">
+          <FontAwesomeIcon icon="check" />
+        </div>
         <h2 class="success-title">Заказ успешно оформлен!</h2>
         <p class="success-message">
           Спасибо за ваш заказ. Информация о заказе и ключи активации отправлены на ваш email.
@@ -209,9 +215,11 @@
 import { ref, reactive, computed } from 'vue';
 import { useCartStore } from '~/stores/cartStore';
 import { useAuthStore } from '~/stores/authStore';
+import { useOrdersStore } from '~/stores/ordersStore';
 
 const cartStore = useCartStore();
 const authStore = useAuthStore();
+const ordersStore = useOrdersStore();
 const router = useRouter();
 
 // Form data
@@ -348,6 +356,18 @@ const placeOrder = async () => {
     
     // Generate order number
     orderNumber.value = generateOrderNumber();
+    
+    // Create an address string from form data (in a real app, this would be more structured)
+    const addressStr = `${formData.name}, ${formData.email}${formData.phone ? ', ' + formData.phone : ''}`;
+    
+    // Create order using the orders store
+    const orderId = ordersStore.createOrder(
+      cartStore.items,
+      addressStr,
+      formData.paymentMethod
+    );
+    
+    console.log('Order created with ID:', orderId);
     
     // Show success modal
     showSuccessModal.value = true;

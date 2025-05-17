@@ -2,14 +2,21 @@
   <div class="error-page">
     <div class="container">
       <div class="error-content">
+        <div class="error-icon">
+          <FontAwesomeIcon icon="exclamation-triangle" size="4x" />
+        </div>
         <div class="error-code">404</div>
         <h1 class="error-title">Страница не найдена</h1>
         <p class="error-message">
-          Извините, запрашиваемая страница не существует или была перемещена.
+          <FontAwesomeIcon icon="info-circle" class="mr-1" /> Извините, запрашиваемая страница не существует или была перемещена.
         </p>
         <div class="error-actions">
-          <NuxtLink to="/" class="btn btn-primary">На главную</NuxtLink>
-          <NuxtLink to="/catalog" class="btn btn-outline-primary">В каталог</NuxtLink>
+          <NuxtLink to="/" class="btn btn-primary">
+            <FontAwesomeIcon icon="home" class="mr-1" /> На главную
+          </NuxtLink>
+          <NuxtLink to="/catalog" class="btn btn-outline-primary">
+            <FontAwesomeIcon icon="search" class="mr-1" /> В каталог
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -41,6 +48,15 @@ useSeoMeta({
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
+  }
+  
+  .error-icon {
+    color: $warning;
+    margin-bottom: $spacer;
+  }
+  
+  .mr-1 {
+    margin-right: $spacer * 0.25;
   }
   
   .error-code {

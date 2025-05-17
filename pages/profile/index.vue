@@ -25,33 +25,33 @@
               :class="{ active: activeTab === 'personal' }"
               @click="activeTab = 'personal'"
             >
-              Личные данные
+              <FontAwesomeIcon icon="user" class="nav-icon" /> Личные данные
             </button>
             <button 
               class="nav-item" 
               :class="{ active: activeTab === 'orders' }"
               @click="activeTab = 'orders'"
             >
-              История заказов
+              <FontAwesomeIcon icon="shopping-bag" class="nav-icon" /> История заказов
             </button>
             <button 
               class="nav-item" 
               :class="{ active: activeTab === 'addresses' }"
               @click="activeTab = 'addresses'"
             >
-              Адреса доставки
+              <FontAwesomeIcon icon="map-marker-alt" class="nav-icon" /> Адреса доставки
             </button>
             <button 
               class="nav-item" 
               :class="{ active: activeTab === 'security' }"
               @click="activeTab = 'security'"
             >
-              Безопасность
+              <FontAwesomeIcon icon="shield-alt" class="nav-icon" /> Безопасность
             </button>
           </div>
           
           <button class="btn btn-outline-danger btn-logout" @click="logout">
-            Выйти из аккаунта
+            <FontAwesomeIcon icon="sign-out-alt" class="mr-1" /> Выйти из аккаунта
           </button>
         </div>
         
@@ -64,42 +64,53 @@
             <form @submit.prevent="updateProfile" class="profile-form">
               <div class="form-group">
                 <label for="name" class="form-label">Имя</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  v-model="profileForm.name" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.name }"
-                />
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="user" class="input-icon" />
+                  <input 
+                    type="text" 
+                    id="name" 
+                    v-model="profileForm.name" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.name }"
+                  />
+                </div>
                 <div v-if="errors.name" class="invalid-feedback">
-                  {{ errors.name }}
+                  <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.name }}
                 </div>
               </div>
               
               <div class="form-group">
                 <label for="email" class="form-label">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  v-model="profileForm.email" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.email }"
-                  disabled
-                />
-                <div class="form-text">Email нельзя изменить</div>
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="envelope" class="input-icon" />
+                  <input 
+                    type="email" 
+                    id="email" 
+                    v-model="profileForm.email" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.email }"
+                    disabled
+                  />
+                </div>
+                <div class="form-text">
+                  <FontAwesomeIcon icon="info-circle" class="mr-1" /> Email нельзя изменить
+                </div>
               </div>
               
               <div class="form-group">
                 <label for="phone" class="form-label">Телефон</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  v-model="profileForm.phone" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.phone }"
-                />
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="phone" class="input-icon" />
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    v-model="profileForm.phone" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.phone }"
+                  />
+                </div>
                 <div v-if="errors.phone" class="invalid-feedback">
-                  {{ errors.phone }}
+                  <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.phone }}
                 </div>
               </div>
               
@@ -108,8 +119,12 @@
                 class="btn btn-primary"
                 :disabled="isSubmitting"
               >
-                <span v-if="isSubmitting">Сохранение...</span>
-                <span v-else>Сохранить изменения</span>
+                <span v-if="isSubmitting">
+                  <FontAwesomeIcon icon="circle-notch" spin class="mr-1" /> Сохранение...
+                </span>
+                <span v-else>
+                  <FontAwesomeIcon icon="save" class="mr-1" /> Сохранить изменения
+                </span>
               </button>
             </form>
           </div>
@@ -119,15 +134,10 @@
             <h2 class="tab-title">История заказов</h2>
             
             <div v-if="orders.length === 0" class="empty-state">
-              <PlaceholderImage 
-                width="200px" 
-                height="150px" 
-                bgColor="#f5f5f5" 
-                fontSize="1.2rem"
-              />
+              <FontAwesomeIcon icon="shopping-bag" class="empty-icon" />
               <p class="empty-text">У вас пока нет заказов</p>
               <NuxtLink to="/catalog" class="btn btn-primary">
-                Перейти в каталог
+                <FontAwesomeIcon icon="search" class="mr-1" /> Перейти в каталог
               </NuxtLink>
             </div>
             
@@ -135,11 +145,15 @@
               <div v-for="order in orders" :key="order.id" class="order-card">
                 <div class="order-header">
                   <div class="order-info">
-                    <div class="order-number">Заказ #{{ order.id }}</div>
-                    <div class="order-date">{{ formatDate(order.date) }}</div>
+                    <div class="order-number">
+                      <FontAwesomeIcon icon="file-invoice" class="mr-1" /> Заказ #{{ order.id }}
+                    </div>
+                    <div class="order-date">
+                      <FontAwesomeIcon icon="calendar-alt" class="mr-1" /> {{ formatDate(order.date) }}
+                    </div>
                   </div>
                   <div class="order-status" :class="order.status">
-                    {{ getStatusText(order.status) }}
+                    <FontAwesomeIcon :icon="getStatusIcon(order.status)" class="mr-1" /> {{ getStatusText(order.status) }}
                   </div>
                 </div>
                 
@@ -160,12 +174,19 @@
                 
                 <div class="order-footer">
                   <div class="order-total">
-                    <span class="total-label">Итого:</span>
+                    <span class="total-label">
+                      <FontAwesomeIcon icon="receipt" class="mr-1" /> Итого:
+                    </span>
                     <span class="total-price">{{ formatPrice(order.total) }}</span>
                   </div>
-                  <button class="btn btn-outline-primary btn-sm">
-                    Повторить заказ
-                  </button>
+                  <div class="order-actions">
+                    <button class="btn btn-outline-primary btn-sm">
+                      <FontAwesomeIcon icon="redo" class="mr-1" /> Повторить заказ
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm">
+                      <FontAwesomeIcon icon="download" class="mr-1" /> Чек
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,35 +197,39 @@
             <h2 class="tab-title">Адреса доставки</h2>
             
             <div v-if="addresses.length === 0" class="empty-state">
-              <PlaceholderImage 
-                width="200px" 
-                height="150px" 
-                bgColor="#f5f5f5" 
-                fontSize="1.2rem"
-              />
+              <FontAwesomeIcon icon="map-marker-alt" class="empty-icon" />
               <p class="empty-text">У вас пока нет сохраненных адресов</p>
+              <button class="btn btn-primary" @click="showAddressForm = true">
+                <FontAwesomeIcon icon="plus" class="mr-1" /> Добавить адрес
+              </button>
             </div>
             
             <div v-else class="addresses-list">
               <div v-for="address in addresses" :key="address.id" class="address-card">
                 <div class="address-content">
-                  <div class="address-title">{{ address.title }}</div>
-                  <div class="address-text">{{ address.fullAddress }}</div>
-                  <div class="address-phone">{{ address.phone }}</div>
+                  <div class="address-title">
+                    <FontAwesomeIcon icon="home" class="mr-1" /> {{ address.title }}
+                  </div>
+                  <div class="address-text">
+                    <FontAwesomeIcon icon="map-marker-alt" class="mr-1 text-muted" /> {{ address.fullAddress }}
+                  </div>
+                  <div class="address-phone">
+                    <FontAwesomeIcon icon="phone" class="mr-1 text-muted" /> {{ address.phone }}
+                  </div>
                 </div>
                 <div class="address-actions">
                   <button class="btn btn-outline-primary btn-sm" @click="editAddress(address)">
-                    Изменить
+                    <FontAwesomeIcon icon="edit" class="mr-1" /> Редактировать
                   </button>
                   <button class="btn btn-outline-danger btn-sm" @click="deleteAddress(address.id)">
-                    Удалить
+                    <FontAwesomeIcon icon="trash-alt" class="mr-1" /> Удалить
                   </button>
                 </div>
               </div>
             </div>
             
             <button class="btn btn-primary mt-3" @click="showAddressForm = true">
-              Добавить новый адрес
+              <FontAwesomeIcon icon="plus" class="mr-1" /> Добавить новый адрес
             </button>
           </div>
           
@@ -215,43 +240,52 @@
             <form @submit.prevent="changePassword" class="profile-form">
               <div class="form-group">
                 <label for="currentPassword" class="form-label">Текущий пароль</label>
-                <input 
-                  type="password" 
-                  id="currentPassword" 
-                  v-model="passwordForm.currentPassword" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.currentPassword }"
-                />
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="lock" class="input-icon" />
+                  <input 
+                    type="password" 
+                    id="currentPassword" 
+                    v-model="passwordForm.currentPassword" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.currentPassword }"
+                  />
+                </div>
                 <div v-if="errors.currentPassword" class="invalid-feedback">
-                  {{ errors.currentPassword }}
+                  <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.currentPassword }}
                 </div>
               </div>
               
               <div class="form-group">
                 <label for="newPassword" class="form-label">Новый пароль</label>
-                <input 
-                  type="password" 
-                  id="newPassword" 
-                  v-model="passwordForm.newPassword" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.newPassword }"
-                />
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="key" class="input-icon" />
+                  <input 
+                    type="password" 
+                    id="newPassword" 
+                    v-model="passwordForm.newPassword" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.newPassword }"
+                  />
+                </div>
                 <div v-if="errors.newPassword" class="invalid-feedback">
-                  {{ errors.newPassword }}
+                  <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.newPassword }}
                 </div>
               </div>
               
               <div class="form-group">
                 <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
-                <input 
-                  type="password" 
-                  id="confirmPassword" 
-                  v-model="passwordForm.confirmPassword" 
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.confirmPassword }"
-                />
+                <div class="input-with-icon">
+                  <FontAwesomeIcon icon="check-circle" class="input-icon" />
+                  <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    v-model="passwordForm.confirmPassword" 
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.confirmPassword }"
+                  />
+                </div>
                 <div v-if="errors.confirmPassword" class="invalid-feedback">
-                  {{ errors.confirmPassword }}
+                  <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.confirmPassword }}
                 </div>
               </div>
               
@@ -260,8 +294,12 @@
                 class="btn btn-primary"
                 :disabled="isSubmitting"
               >
-                <span v-if="isSubmitting">Сохранение...</span>
-                <span v-else>Изменить пароль</span>
+                <span v-if="isSubmitting">
+                  <FontAwesomeIcon icon="circle-notch" spin class="mr-1" /> Сохранение...
+                </span>
+                <span v-else>
+                  <FontAwesomeIcon icon="shield-alt" class="mr-1" /> Изменить пароль
+                </span>
               </button>
             </form>
           </div>
@@ -459,15 +497,37 @@ const formatPrice = (price: number) => {
 };
 
 const getStatusText = (status: string) => {
-  const statusMap: Record<string, string> = {
-    'pending': 'Ожидает оплаты',
-    'processing': 'В обработке',
-    'shipped': 'Отправлен',
-    'completed': 'Выполнен',
-    'cancelled': 'Отменен'
-  };
-  
-  return statusMap[status] || status;
+  switch (status) {
+    case 'pending':
+      return 'Ожидает оплаты';
+    case 'processing':
+      return 'В обработке';
+    case 'shipped':
+      return 'Отправлен';
+    case 'completed':
+      return 'Завершен';
+    case 'cancelled':
+      return 'Отменен';
+    default:
+      return status;
+  }
+};
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return 'clock';
+    case 'processing':
+      return 'spinner';
+    case 'shipped':
+      return 'truck';
+    case 'completed':
+      return 'check-circle';
+    case 'cancelled':
+      return 'times-circle';
+    default:
+      return 'info-circle';
+  }
 };
 
 // SEO metadata
@@ -541,14 +601,17 @@ useSeoMeta({
         width: 100%;
         padding: $spacer;
         text-align: left;
-        border: none;
         background: none;
-        border-bottom: 1px solid $gray-200;
-        transition: $transition-base;
+        border: none;
+        border-radius: $border-radius;
         cursor: pointer;
+        transition: $transition-base;
         
-        &:last-child {
-          border-bottom: none;
+        .nav-icon {
+          width: 16px;
+          height: 16px;
+          margin-right: $spacer * 0.75;
+          color: currentColor;
         }
         
         &:hover {
@@ -639,6 +702,8 @@ useSeoMeta({
       color: $danger;
       font-size: $font-size-sm;
       margin-top: $spacer * 0.25;
+      display: flex;
+      align-items: center;
     }
   }
   
@@ -646,10 +711,20 @@ useSeoMeta({
     text-align: center;
     padding: $spacer * 2;
     
+    .empty-icon {
+      font-size: 4rem;
+      color: $gray-400;
+      margin-bottom: $spacer;
+    }
+    
     .empty-text {
       margin: $spacer 0;
       color: $gray-600;
     }
+  }
+  
+  .text-muted {
+    color: $gray-600;
   }
   
   .orders-list {
@@ -747,6 +822,11 @@ useSeoMeta({
       padding: $spacer;
       border-top: 1px solid $gray-200;
       background-color: $gray-50;
+      
+      .order-actions {
+        display: flex;
+        gap: $spacer * 0.5;
+      }
     }
     
     .order-total {

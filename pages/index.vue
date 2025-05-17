@@ -29,19 +29,24 @@
     <section class="products-section">
       <div class="container">
         <h2 class="section-title">Популярные продукты</h2>
-        <div v-if="productStore.loading" class="loading-spinner">
-          Загрузка...
-        </div>
-        <div v-else-if="productStore.error" class="error-message">
-          {{ productStore.error }}
-        </div>
-        <div v-else class="product-grid">
-          <ProductCard 
-            v-for="product in featuredProducts" 
-            :key="product.id" 
-            :product="product" 
-          />
-        </div>
+        <ClientOnly>
+          <div v-if="productStore.loading" class="loading-spinner">
+            Загрузка...
+          </div>
+          <div v-else-if="productStore.error" class="error-message">
+            {{ productStore.error }}
+          </div>
+          <div v-else class="product-grid">
+            <ProductCard 
+              v-for="product in featuredProducts" 
+              :key="product.id" 
+              :product="product" 
+            />
+          </div>
+          <template #fallback>
+            <div class="loading-spinner">Загрузка продуктов...</div>
+          </template>
+        </ClientOnly>
       </div>
     </section>
 
@@ -51,27 +56,37 @@
         <h2 class="section-title">Категории ПО</h2>
         <div class="categories-grid">
           <div class="category-card" @click="navigateToCategory('Antivirus')">
-            <div class="category-icon">🛡️</div>
+            <div class="category-icon">
+              <FontAwesomeIcon icon="shield" size="2x" />
+            </div>
             <h3 class="category-title">Антивирусы</h3>
             <p class="category-description">Защита от вредоносных программ и кибератак</p>
           </div>
           <div class="category-card" @click="navigateToCategory('Graphics')">
-            <div class="category-icon">🎨</div>
+            <div class="category-icon">
+              <FontAwesomeIcon icon="paint-brush" size="2x" />
+            </div>
             <h3 class="category-title">Графика</h3>
             <p class="category-description">Фото и видеоредакторы для творческих задач</p>
           </div>
           <div class="category-card" @click="navigateToCategory('Office')">
-            <div class="category-icon">📊</div>
+            <div class="category-icon">
+              <FontAwesomeIcon icon="file-alt" size="2x" />
+            </div>
             <h3 class="category-title">Офисные программы</h3>
             <p class="category-description">Инструменты для работы с документами и данными</p>
           </div>
           <div class="category-card" @click="navigateToCategory('Development')">
-            <div class="category-icon">💻</div>
+            <div class="category-icon">
+              <FontAwesomeIcon icon="code" size="2x" />
+            </div>
             <h3 class="category-title">Разработка</h3>
             <p class="category-description">Среды разработки и инструменты для программистов</p>
           </div>
           <div class="category-card" @click="navigateToCategory('Utilities')">
-            <div class="category-icon">🔧</div>
+            <div class="category-icon">
+              <FontAwesomeIcon icon="wrench" size="2x" />
+            </div>
             <h3 class="category-title">Утилиты</h3>
             <p class="category-description">Полезные инструменты для оптимизации работы</p>
           </div>

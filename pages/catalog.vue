@@ -15,7 +15,7 @@
       <div class="catalog-content">
         <aside class="catalog-sidebar">
           <div class="filter-section">
-            <h3 class="filter-title">Категории</h3>
+            <h3 class="filter-title"><FontAwesomeIcon icon="tags" class="filter-icon" /> Категории</h3>
             <div class="filter-options">
               <div 
                 v-for="category in categories" 
@@ -37,7 +37,7 @@
           </div>
           
           <div class="filter-section">
-            <h3 class="filter-title">Цена</h3>
+            <h3 class="filter-title"><FontAwesomeIcon icon="dollar-sign" class="filter-icon" /> Цена</h3>
             <div class="filter-price-range">
               <div class="price-inputs">
                 <input 
@@ -60,7 +60,7 @@
           </div>
           
           <div class="filter-section">
-            <h3 class="filter-title">Платформа</h3>
+            <h3 class="filter-title"><FontAwesomeIcon icon="desktop" class="filter-icon" /> Платформа</h3>
             <div class="filter-options">
               <div 
                 v-for="platform in platforms" 
@@ -80,7 +80,7 @@
           </div>
           
           <div class="filter-section">
-            <h3 class="filter-title">Рейтинг</h3>
+            <h3 class="filter-title"><FontAwesomeIcon icon="star" class="filter-icon" /> Рейтинг</h3>
             <div class="filter-options">
               <div 
                 v-for="rating in [5, 4, 3, 2, 1]" 
@@ -103,19 +103,26 @@
           </div>
           
           <button class="btn btn-outline-primary btn-block" @click="resetFilters">
-            Сбросить фильтры
+            <FontAwesomeIcon icon="undo" class="mr-1" /> Сбросить фильтры
           </button>
         </aside>
         
         <div class="catalog-main">
           <div class="catalog-toolbar">
-            <div class="catalog-count">
-              {{ filteredProducts.length }} {{ productCountText }}
-            </div>
+            <ClientOnly>
+              <div class="catalog-count">
+                {{ filteredProducts.length }} {{ productCountText }}
+              </div>
+              <template #fallback>
+                <div class="catalog-count">
+                  0 товаров
+                </div>
+              </template>
+            </ClientOnly>
             
             <div class="catalog-sort">
-              <label for="sort-select">Сортировать по:</label>
-              <select id="sort-select" v-model="sortBy" class="sort-select">
+              <span class="sort-label"><FontAwesomeIcon icon="sort" class="mr-1" /> Сортировать по:</span>
+              <select v-model="sortBy" class="sort-select">
                 <option value="popularity">Популярности</option>
                 <option value="price-asc">Цена (по возрастанию)</option>
                 <option value="price-desc">Цена (по убыванию)</option>
@@ -124,26 +131,42 @@
             </div>
           </div>
           
-          <div v-if="productStore.loading" class="loading-spinner">
-            Загрузка...
-          </div>
-          
-          <div v-else-if="productStore.error" class="error-message">
-            {{ productStore.error }}
-          </div>
-          
-          <div v-else-if="filteredProducts.length === 0" class="no-products">
-            <p>По вашему запросу ничего не найдено.</p>
-            <button class="btn btn-primary" @click="resetFilters">Сбросить фильтры</button>
-          </div>
-          
-          <div v-else class="products-grid">
-            <ProductCard 
-              v-for="product in filteredProducts" 
-              :key="product.id" 
-              :product="product" 
-            />
-          </div>
+          <ClientOnly>
+            <div v-if="productStore.loading" class="loading-spinner">
+              <FontAwesomeIcon icon="circle-notch" spin size="2x" class="mb-2" />
+              <div>Загрузка...</div>
+            </div>
+            
+            <div v-else-if="productStore.error" class="error-message">
+              <FontAwesomeIcon icon="exclamation-circle" size="2x" class="mb-2 text-danger" />
+              <p>Произошла ошибка при загрузке товаров</p>
+              <button class="btn btn-primary" @click="productStore.fetchProducts">
+                <FontAwesomeIcon icon="sync" class="mr-1" /> Попробовать снова
+              </button>
+            </div>
+            
+            <div v-else-if="filteredProducts.length === 0" class="no-products">
+              <FontAwesomeIcon icon="search" size="2x" class="mb-2 text-muted" />
+              <p>По вашему запросу ничего не найдено</p>
+              <button class="btn btn-primary" @click="resetFilters">
+                <FontAwesomeIcon icon="undo" class="mr-1" /> Сбросить фильтры
+              </button>
+            </div>
+            
+            <div v-else class="products-grid">
+              <ProductCard 
+                v-for="product in filteredProducts" 
+                :key="product.id" 
+                :product="product" 
+              />
+            </div>
+            
+            <template #fallback>
+              <div class="loading-spinner">
+                Загрузка...
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </div>
     </div>
@@ -167,7 +190,7 @@ const selectedPlatforms = ref([...filterStore.platform]);
 const sortBy = ref(filterStore.sortBy);
 
 // Available filter options
-const categories = ['Antivirus', 'Graphics', 'Office', 'Development', 'Utilities'];
+const categories = ['Antivirus', 'Graphics', 'Office', 'Development', 'Utilities', 'OC'];
 const platforms = ['Windows', 'Mac', 'Linux', 'Web'];
 
 // Fetch products on component mount
@@ -384,6 +407,15 @@ watch(sortBy, (newValue) => {
   .filter-title {
     font-size: $font-size-lg;
     margin-bottom: $spacer;
+    display: flex;
+    align-items: center;
+    
+    .filter-icon {
+      margin-right: $spacer * 0.5;
+      color: $primary;
+      width: 16px;
+      height: 16px;
+    }
   }
   
   .filter-options {
@@ -510,10 +542,30 @@ watch(sortBy, (newValue) => {
     padding: $spacer * 3;
     background-color: $gray-100;
     border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     
     p {
       margin-bottom: $spacer;
     }
+  }
+  
+  .mb-2 {
+    margin-bottom: $spacer * 0.75;
+  }
+  
+  .mr-1 {
+    margin-right: $spacer * 0.25;
+  }
+  
+  .text-danger {
+    color: $danger;
+  }
+  
+  .text-muted {
+    color: $gray-600;
   }
 }
 </style>

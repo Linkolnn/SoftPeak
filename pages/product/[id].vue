@@ -20,13 +20,17 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="loading-spinner">
-        Загрузка...
+        <FontAwesomeIcon icon="circle-notch" spin size="2x" class="mb-2" />
+        <div>Загрузка...</div>
       </div>
 
       <!-- Error State -->
       <div v-else-if="error" class="error-message">
-        {{ error }}
-        <button class="btn btn-primary mt-3" @click="goBack">Вернуться назад</button>
+        <FontAwesomeIcon icon="exclamation-circle" size="2x" class="mb-2 text-danger" />
+        <div>{{ error }}</div>
+        <button class="btn btn-primary mt-3" @click="goBack">
+          <FontAwesomeIcon icon="arrow-left" class="mr-1" /> Вернуться назад
+        </button>
       </div>
 
       <!-- Product Details -->
@@ -58,11 +62,15 @@
 
           <div class="product-meta">
             <div class="product-rating">
-              <span class="rating-stars">{{ ratingStars }}</span>
+              <span class="rating-stars">
+                <FontAwesomeIcon v-for="i in Math.floor(product.rating)" :key="'star-'+i" icon="star" />
+                <FontAwesomeIcon v-if="product.rating % 1 >= 0.5" icon="star-half-alt" />
+                <FontAwesomeIcon v-for="i in Math.floor(5 - product.rating)" :key="'empty-star-'+i" icon="star" class="empty-star" />
+              </span>
               <span class="rating-count">({{ product.reviewCount }} отзывов)</span>
             </div>
             <div class="product-category">
-              Категория: 
+              <FontAwesomeIcon icon="tags" class="mr-1" /> Категория: 
               <NuxtLink :to="`/catalog?category=${product.category}`">
                 {{ product.category }}
               </NuxtLink>
@@ -79,15 +87,15 @@
 
           <div class="product-actions">
             <button class="btn btn-primary btn-lg" @click="addToCart">
-              Добавить в корзину
+              <FontAwesomeIcon icon="shopping-cart" class="mr-1" /> Добавить в корзину
             </button>
             <button class="btn btn-outline-primary btn-lg">
-              Купить сейчас
+              <FontAwesomeIcon icon="credit-card" class="mr-1" /> Купить сейчас
             </button>
           </div>
 
           <div class="product-platforms">
-            <h3 class="info-title">Поддерживаемые платформы:</h3>
+            <h3 class="info-title"><FontAwesomeIcon icon="desktop" class="mr-1" /> Поддерживаемые платформы:</h3>
             <div class="platforms-list">
               <span 
                 v-for="platform in product.platform" 
@@ -100,7 +108,7 @@
           </div>
 
           <div class="product-specs">
-            <h3 class="info-title">Характеристики:</h3>
+            <h3 class="info-title"><FontAwesomeIcon icon="info-circle" class="mr-1" /> Характеристики:</h3>
             <table class="specs-table">
               <tbody>
                 <tr>
@@ -131,14 +139,14 @@
             :class="{ active: activeTab === tab.id }"
             @click="activeTab = tab.id"
           >
-            {{ tab.label }}
+            <FontAwesomeIcon :icon="getTabIcon(tab.id)" class="mr-1" /> {{ tab.label }}
           </div>
         </div>
 
         <div class="tab-content">
           <!-- Description Tab -->
           <div v-if="activeTab === 'description'" class="tab-pane">
-            <h2 class="tab-title">Описание</h2>
+            <h2 class="tab-title"><FontAwesomeIcon icon="file-alt" class="mr-1" /> Описание</h2>
             <div class="product-description">
               <p>{{ product.description }}</p>
             </div>
@@ -146,7 +154,7 @@
 
           <!-- Specifications Tab -->
           <div v-if="activeTab === 'specifications'" class="tab-pane">
-            <h2 class="tab-title">Системные требования</h2>
+            <h2 class="tab-title"><FontAwesomeIcon icon="laptop" class="mr-1" /> Системные требования</h2>
             <table class="specs-table full-width">
               <tbody>
                 <tr>
@@ -175,7 +183,7 @@
 
           <!-- Reviews Tab -->
           <div v-if="activeTab === 'reviews'" class="tab-pane">
-            <h2 class="tab-title">Отзывы ({{ product.reviewCount }})</h2>
+            <h2 class="tab-title"><FontAwesomeIcon icon="comment" class="mr-1" /> Отзывы ({{ product.reviewCount }})</h2>
             <div class="reviews-summary">
               <div class="rating-average">
                 <div class="rating-number">{{ product.rating.toFixed(1) }}</div>
@@ -222,22 +230,26 @@
 
           <!-- FAQ Tab -->
           <div v-if="activeTab === 'faq'" class="tab-pane">
-            <h2 class="tab-title">Часто задаваемые вопросы</h2>
+            <h2 class="tab-title"><FontAwesomeIcon icon="question-circle" class="mr-1" /> Частые вопросы</h2>
             <div class="faq-list">
               <div class="faq-item">
                 <div class="faq-question" @click="toggleFaq(0)">
-                  Как скачать программу после покупки?
-                  <span class="faq-toggle">{{ faqOpen[0] ? '−' : '+' }}</span>
+                  <FontAwesomeIcon icon="download" class="mr-1" /> Как установить программу?
+                  <span class="faq-toggle">
+                    <FontAwesomeIcon :icon="faqOpen[0] ? 'minus' : 'plus'" />
+                  </span>
                 </div>
                 <div class="faq-answer" v-if="faqOpen[0]">
-                  <p>После успешной оплаты вы получите электронное письмо с ключом активации и ссылкой для скачивания программы. Также вы можете найти ключ и ссылку в вашем личном кабинете в разделе "История заказов".</p>
+                  <p>После покупки вы получите ссылку на скачивание инсталлятора. Запустите его и следуйте инструкциям на экране. После установки вы можете запустить программу через меню Пуск или ярлык на рабочем столе.</p>
                 </div>
               </div>
 
               <div class="faq-item">
                 <div class="faq-question" @click="toggleFaq(1)">
-                  Как активировать лицензию?
-                  <span class="faq-toggle">{{ faqOpen[1] ? '−' : '+' }}</span>
+                  <FontAwesomeIcon icon="key" class="mr-1" /> Как активировать лицензию?
+                  <span class="faq-toggle">
+                    <FontAwesomeIcon :icon="faqOpen[1] ? 'minus' : 'plus'" />
+                  </span>
                 </div>
                 <div class="faq-answer" v-if="faqOpen[1]">
                   <p>После установки программы запустите ее и найдите в меню пункт "Активация" или "Регистрация". Введите полученный ключ активации и следуйте инструкциям на экране.</p>
@@ -246,8 +258,10 @@
 
               <div class="faq-item">
                 <div class="faq-question" @click="toggleFaq(2)">
-                  Можно ли установить программу на несколько устройств?
-                  <span class="faq-toggle">{{ faqOpen[2] ? '−' : '+' }}</span>
+                  <FontAwesomeIcon icon="laptop" class="mr-1" /> Могу ли я использовать программу на нескольких устройствах?
+                  <span class="faq-toggle">
+                    <FontAwesomeIcon :icon="faqOpen[2] ? 'minus' : 'plus'" />
+                  </span>
                 </div>
                 <div class="faq-answer" v-if="faqOpen[2]">
                   <p>Это зависит от условий лицензии конкретного продукта. Обычно стандартная лицензия позволяет установку на 1-3 устройства. Подробную информацию вы можете найти в описании продукта или в лицензионном соглашении.</p>
@@ -260,7 +274,7 @@
 
       <!-- Related Products -->
       <div v-if="product && relatedProducts.length > 0" class="related-products">
-        <h2 class="section-title">С этим также покупают</h2>
+        <h2 class="section-title"><FontAwesomeIcon icon="th-large" class="mr-1" /> С этим также покупают</h2>
         <div class="product-grid">
           <ProductCard 
             v-for="relatedProduct in relatedProducts" 
@@ -381,6 +395,22 @@ const goBack = () => {
   router.back();
 };
 
+// Get icon for tab
+const getTabIcon = (tabId: string) => {
+  switch (tabId) {
+    case 'description':
+      return 'file-alt';
+    case 'specifications':
+      return 'laptop';
+    case 'reviews':
+      return 'comment';
+    case 'faq':
+      return 'question-circle';
+    default:
+      return 'info-circle';
+  }
+};
+
 // SEO metadata
 useSeoMeta({
   title: computed(() => product.value ? `${product.value.name} | SoftPeak` : 'Продукт | SoftPeak'),
@@ -389,42 +419,28 @@ useSeoMeta({
 </script>
 
 <style lang="scss" scoped>
-.product-page {
-  padding: $spacer * 2 0;
-  
-  .breadcrumbs {
-    display: flex;
-    align-items: center;
-    font-size: $font-size-sm;
-    margin-bottom: $spacer * 2;
-    flex-wrap: wrap;
-    
-    .breadcrumb-item {
-      color: $gray-600;
-      text-decoration: none;
-      
-      &.active {
-        color: $gray-900;
-        font-weight: $font-weight-medium;
-      }
-      
-      &:not(.active):hover {
-        color: $primary;
-        text-decoration: underline;
-      }
-    }
-    
-    .breadcrumb-separator {
-      margin: 0 $spacer * 0.5;
-      color: $gray-500;
-    }
-  }
-  
   .loading-spinner, .error-message {
     text-align: center;
     padding: $spacer * 3;
+    margin: $spacer * 2 0;
     background-color: $gray-100;
     border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mb-2 {
+    margin-bottom: $spacer * 0.75;
+  }
+  
+  .mr-1 {
+    margin-right: $spacer * 0.25;
+  }
+  
+  .text-danger {
+    color: $danger;
   }
   
   .product-details {
@@ -435,65 +451,6 @@ useSeoMeta({
     @media (max-width: map-get($breakpoints, lg)) {
       flex-direction: column;
     }
-  }
-  
-  .product-gallery {
-    flex: 0 0 45%;
-    
-    @media (max-width: map-get($breakpoints, lg)) {
-      flex: auto;
-    }
-    
-    .product-image-main {
-      margin-bottom: $spacer;
-      border-radius: $border-radius;
-      overflow: hidden;
-      
-      .main-image {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-    }
-    
-    .product-image-thumbnails {
-      display: flex;
-      gap: $spacer * 0.5;
-      
-      .thumbnail {
-        width: 80px;
-        height: 80px;
-        border-radius: $border-radius;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid transparent;
-        
-        &.active {
-          border-color: $primary;
-        }
-        
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-  }
-  
-  .product-info {
-    flex: 1;
-  }
-  
-  .product-badges {
-    display: flex;
-    gap: $spacer * 0.5;
-    margin-bottom: $spacer;
-  }
-  
-  .product-title {
-    font-size: $h2-font-size;
-    margin-bottom: $spacer;
   }
   
   .product-meta {
@@ -509,14 +466,26 @@ useSeoMeta({
     .product-rating {
       display: flex;
       align-items: center;
+      margin-bottom: $spacer * 0.5;
       
       .rating-stars {
         color: $warning;
         margin-right: $spacer * 0.5;
+        display: flex;
+        align-items: center;
+        
+        .empty-star {
+          color: $gray-300;
+        }
+        
+        svg {
+          margin-right: 2px;
+        }
       }
       
       .rating-count {
         color: $gray-600;
+        font-size: $font-size-sm;
       }
     }
     
@@ -534,234 +503,21 @@ useSeoMeta({
     }
   }
   
-  .product-price {
+  .faq-toggle {
     display: flex;
     align-items: center;
-    margin-bottom: $spacer * 1.5;
+    justify-content: center;
+    color: $gray-600;
     
-    .price-original {
-      font-size: $font-size-lg;
-      color: $gray-600;
-      text-decoration: line-through;
-      margin-right: $spacer;
-    }
-    
-    .price-current {
-      font-size: $h3-font-size;
-      font-weight: $font-weight-bold;
-      color: $primary;
-      margin-right: $spacer;
-    }
-    
-    .price-discount {
-      background-color: $success;
-      color: white;
-      padding: $spacer * 0.25 $spacer * 0.5;
-      border-radius: $border-radius;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-bold;
+    svg {
+      width: 14px;
+      height: 14px;
     }
   }
   
-  .product-actions {
-    display: flex;
-    gap: $spacer;
-    margin-bottom: $spacer * 2;
-    
-    @media (max-width: map-get($breakpoints, sm)) {
-      flex-direction: column;
-    }
-    
-    .btn-lg {
-      padding: $spacer * 0.75 $spacer * 1.5;
-    }
-  }
-  
-  .info-title {
-    font-size: $font-size-lg;
-    margin-bottom: $spacer * 0.5;
-  }
-  
-  .product-platforms {
-    margin-bottom: $spacer * 1.5;
-    
-    .platforms-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $spacer * 0.5;
-    }
-    
-    .platform-badge {
-      background-color: $gray-100;
-      border: 1px solid $gray-300;
-      padding: $spacer * 0.25 $spacer * 0.75;
-      border-radius: $border-radius-pill;
-      font-size: $font-size-sm;
-    }
-  }
-  
-  .specs-table {
-    width: 100%;
-    
-    &.full-width {
-      width: 100%;
-    }
-    
-    td {
-      padding: $spacer * 0.5;
-      border-bottom: 1px solid $gray-200;
-      
-      &:first-child {
-        font-weight: $font-weight-medium;
-        width: 40%;
-      }
-    }
-  }
-  
-  .product-tabs {
-    margin-bottom: $spacer * 3;
-    
-    .tabs-header {
-      display: flex;
-      border-bottom: 1px solid $gray-300;
-      margin-bottom: $spacer * 2;
-      
-      @media (max-width: map-get($breakpoints, md)) {
-        flex-wrap: wrap;
-      }
-    }
-    
-    .tab-item {
-      padding: $spacer $spacer * 1.5;
-      cursor: pointer;
-      font-weight: $font-weight-medium;
-      border-bottom: 2px solid transparent;
-      transition: $transition-base;
-      
-      &:hover {
-        color: $primary;
-      }
-      
-      &.active {
-        color: $primary;
-        border-bottom-color: $primary;
-      }
-      
-      @media (max-width: map-get($breakpoints, md)) {
-        padding: $spacer * 0.5 $spacer;
-      }
-    }
-    
-    .tab-title {
-      margin-bottom: $spacer;
-    }
-  }
-  
-  .reviews-summary {
-    display: flex;
-    margin-bottom: $spacer * 2;
-    
-    .rating-average {
-      text-align: center;
-      margin-right: $spacer * 3;
-    }
-    
-    .rating-number {
-      font-size: $h1-font-size;
-      font-weight: $font-weight-bold;
-      color: $gray-900;
-    }
-    
-    .rating-stars {
-      color: $warning;
-      font-size: $font-size-lg;
-      margin: $spacer * 0.5 0;
-    }
-    
-    .rating-count {
-      color: $gray-600;
-    }
-  }
-  
-  .reviews-list {
-    .review-item {
-      border-bottom: 1px solid $gray-200;
-      padding-bottom: $spacer;
-      margin-bottom: $spacer;
-      
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-    
-    .review-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: $spacer * 0.5;
-    }
-    
-    .review-author {
-      display: flex;
-      align-items: center;
-    }
-    
-    .author-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: $primary;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: $font-weight-bold;
-      margin-right: $spacer * 0.75;
-    }
-    
-    .author-name {
-      font-weight: $font-weight-medium;
-    }
-    
-    .review-date {
-      font-size: $font-size-sm;
-      color: $gray-600;
-    }
-    
-    .review-rating {
-      color: $warning;
-    }
-  }
-  
-  .faq-list {
-    .faq-item {
-      border-bottom: 1px solid $gray-200;
-      
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-    
-    .faq-question {
-      padding: $spacer 0;
-      font-weight: $font-weight-medium;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      
-      &:hover {
-        color: $primary;
-      }
-    }
-    
-    .faq-toggle {
-      font-weight: $font-weight-bold;
-      color: $gray-600;
-    }
-    
-    .faq-answer {
-      padding-bottom: $spacer;
-      color: $gray-700;
-    }
+  .faq-answer {
+    padding-bottom: $spacer;
+    color: $gray-700;
   }
   
   .related-products {
@@ -786,5 +542,4 @@ useSeoMeta({
       gap: $spacer * 1.5;
     }
   }
-}
 </style>

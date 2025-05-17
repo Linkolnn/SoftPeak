@@ -10,41 +10,47 @@
         </div>
         
         <div v-if="authError" class="auth-error">
-          {{ authError }}
+          <FontAwesomeIcon icon="exclamation-circle" class="error-icon" /> {{ authError }}
         </div>
         
         <form @submit.prevent="submitForm" class="auth-form">
           <div v-if="!isLoginMode" class="form-group">
             <label for="name" class="form-label">Имя *</label>
-            <input 
-              type="text" 
-              id="name" 
-              v-model="formData.name" 
-              class="form-control"
-              :class="{ 'is-invalid': errors.name }"
-              @input="validateField('name')"
-              placeholder="Введите ваше имя"
-              :disabled="isSubmitting"
-            />
+            <div class="input-with-icon">
+              <FontAwesomeIcon icon="user" class="input-icon" />
+              <input 
+                type="text" 
+                id="name" 
+                v-model="formData.name" 
+                class="form-control"
+                :class="{ 'is-invalid': errors.name }"
+                @input="validateField('name')"
+                placeholder="Введите ваше имя"
+                :disabled="isSubmitting"
+              />
+            </div>
             <div v-if="errors.name" class="invalid-feedback">
-              {{ errors.name }}
+              <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.name }}
             </div>
           </div>
           
           <div class="form-group">
             <label for="email" class="form-label">Email *</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="formData.email" 
-              class="form-control"
-              :class="{ 'is-invalid': errors.email }"
-              @input="validateField('email')"
-              placeholder="Введите ваш email"
-              :disabled="isSubmitting"
-            />
+            <div class="input-with-icon">
+              <FontAwesomeIcon icon="envelope" class="input-icon" />
+              <input 
+                type="email" 
+                id="email" 
+                v-model="formData.email" 
+                class="form-control"
+                :class="{ 'is-invalid': errors.email }"
+                @input="validateField('email')"
+                placeholder="Введите ваш email"
+                :disabled="isSubmitting"
+              />
+            </div>
             <div v-if="errors.email" class="invalid-feedback">
-              {{ errors.email }}
+              <FontAwesomeIcon icon="exclamation-circle" class="mr-1" /> {{ errors.email }}
             </div>
           </div>
           
@@ -67,7 +73,7 @@
                 @click="togglePasswordVisibility"
                 :disabled="isSubmitting"
               >
-                {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+                <FontAwesomeIcon :icon="showPassword ? 'eye-slash' : 'eye'" />
               </button>
             </div>
             <div v-if="errors.password" class="invalid-feedback">
@@ -94,7 +100,7 @@
                 @click="toggleConfirmPasswordVisibility"
                 :disabled="isSubmitting"
               >
-                {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+                <FontAwesomeIcon :icon="showConfirmPassword ? 'eye-slash' : 'eye'" />
               </button>
             </div>
             <div v-if="errors.confirmPassword" class="invalid-feedback">
@@ -139,15 +145,19 @@
             :disabled="isSubmitting"
           >
             <span v-if="isSubmitting">
+              <FontAwesomeIcon icon="circle-notch" spin class="mr-1" />
               {{ isLoginMode ? 'Вход...' : 'Регистрация...' }}
             </span>
             <span v-else>
+              <FontAwesomeIcon :icon="isLoginMode ? 'sign-in-alt' : 'user-plus'" class="mr-1" />
               {{ isLoginMode ? 'Войти' : 'Зарегистрироваться' }}
             </span>
           </button>
           
           <div v-if="isLoginMode" class="forgot-password">
-            <NuxtLink to="/forgot-password" class="link">Забыли пароль?</NuxtLink>
+            <NuxtLink to="/forgot-password" class="link">
+              <FontAwesomeIcon icon="key" class="mr-1" /> Забыли пароль?
+            </NuxtLink>
           </div>
         </form>
         
@@ -157,8 +167,10 @@
         
         <div class="social-auth">
           <button class="btn btn-outline-secondary btn-social">
-            <span class="social-icon">G</span>
-            <span class="social-text">{{ isLoginMode ? 'Войти с Google' : 'Регистрация с Google' }}</span>
+            <FontAwesomeIcon :icon="['fab', 'google']" class="social-icon" /> Войти через Google
+          </button>
+          <button class="btn btn-outline-secondary btn-social">
+            <FontAwesomeIcon :icon="['fab', 'vk']" class="social-icon" /> Войти через VK
           </button>
         </div>
         
@@ -378,6 +390,14 @@ useSeoMeta({
     border-radius: $border-radius;
     margin-bottom: $spacer;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .error-icon {
+      margin-right: $spacer * 0.5;
+      width: 16px;
+    }
   }
   
   .auth-form {
@@ -416,6 +436,28 @@ useSeoMeta({
     }
   }
   
+  .input-with-icon {
+    position: relative;
+    
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $gray-600;
+      width: 16px;
+      height: 16px;
+    }
+    
+    .form-control {
+      padding-left: 40px;
+    }
+  }
+  
+  .mr-1 {
+    margin-right: 0.25rem;
+  }
+  
   .password-input {
     position: relative;
     
@@ -432,6 +474,15 @@ useSeoMeta({
       border: none;
       cursor: pointer;
       color: $gray-600;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 16px;
+        height: 16px;
+      }
       
       &:hover {
         color: $gray-800;
@@ -448,6 +499,8 @@ useSeoMeta({
     color: $danger;
     font-size: $font-size-sm;
     margin-top: $spacer * 0.25;
+    display: flex;
+    align-items: center;
   }
   
   .form-check {
@@ -519,14 +572,10 @@ useSeoMeta({
     }
     
     .social-icon {
-      width: 24px;
-      height: 24px;
-      background-color: $gray-200;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: $font-weight-bold;
+      width: 18px;
+      height: 18px;
+      margin-right: $spacer * 0.5;
+      color: $gray-700;
     }
   }
   

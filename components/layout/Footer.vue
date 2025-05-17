@@ -9,13 +9,13 @@
           </p>
           <div class="social-links">
             <a href="#" class="social-link" aria-label="Telegram">
-              <span class="social-icon">📱</span>
+              <FontAwesomeIcon :icon="['fab', 'telegram']" class="social-icon" />
             </a>
             <a href="#" class="social-link" aria-label="VK">
-              <span class="social-icon">💬</span>
+              <FontAwesomeIcon :icon="['fab', 'vk']" class="social-icon" />
             </a>
             <a href="#" class="social-link" aria-label="Email">
-              <span class="social-icon">✉️</span>
+              <FontAwesomeIcon icon="envelope" class="social-icon" />
             </a>
           </div>
         </div>
@@ -46,15 +46,15 @@
           <h3 class="footer-title">Контакты</h3>
           <div class="contact-info">
             <div class="contact-item">
-              <span class="contact-icon">📞</span>
+              <FontAwesomeIcon icon="phone" class="contact-icon" />
               <span class="contact-text">+7 (123) 456-7890</span>
             </div>
             <div class="contact-item">
-              <span class="contact-icon">✉️</span>
+              <FontAwesomeIcon icon="envelope" class="contact-icon" />
               <span class="contact-text">info@softpeak.ru</span>
             </div>
             <div class="contact-item">
-              <span class="contact-icon">🕒</span>
+              <FontAwesomeIcon icon="clock" class="contact-icon" />
               <span class="contact-text">Пн-Пт: 9:00 - 18:00</span>
             </div>
           </div>
@@ -155,6 +155,11 @@ const currentYear = computed(() => new Date().getFullYear());
     text-decoration: none;
     transition: $transition-base;
     
+    .social-icon {
+      width: 18px;
+      height: 18px;
+    }
+    
     &:hover {
       background-color: $primary;
       transform: translateY(-3px);
@@ -197,6 +202,8 @@ const currentYear = computed(() => new Date().getFullYear());
   .contact-icon {
     margin-right: $spacer * 0.5;
     font-size: 1.1rem;
+    width: 16px;
+    color: $primary;
   }
   
   .footer-bottom {
